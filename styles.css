@@ -1,66 +1,90 @@
+/* Base reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Page base */
 body {
-    background-color: #000000;
-    color: #ffffff;
-    font-family: sans-serif;
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+/* Layout */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero { text-align: center; }
 
 footer {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
-main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ================================
+   Seamless single-row marquee
+   ================================ */
+:root {
+  --ticker-gap: 64px;          /* spacing between items */
+  --ticker-speed: 18s;         /* lower = faster */
 }
 
-.hero {
-    text-align: center;
+.ticker {
+  overflow: hidden;
+  width: 100%;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  /* soft edge fade so it looks premium */
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  background: #000; /* keeps top bar solid black */
 }
 
-/* ---- SINGLE MARQUEE HEADER ---- */
-.header-marquee {
-    background-color: #000; /* keeps top bar solid */
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+.ticker__move {
+  display: flex;
+  width: max-content;          /* shrink-wrap to content */
+  animation: marquee var(--ticker-speed) linear infinite;
+  will-change: transform;
 }
 
-.marquee-track {
-    display: inline-block;
-    padding: 10px 0;
-    font-weight: 800;
-    font-size: clamp(18px, 2vw, 28px);
-    letter-spacing: 0.5px;
-    animation: scroll-left 12s linear infinite;
+/* Two identical groups placed back-to-back create a perfect loop.
+   The animation slides left by exactly 50% (one group's width). */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-.marquee-track span {
-    margin-right: 50px; /* space between repeats */
+.ticker__group {
+  display: inline-flex;
+  flex: 0 0 auto;              /* don't shrink */
+  gap: var(--ticker-gap);
+  padding: 10px 0;
 }
 
-.marquee-track sup {
-    font-size: 0.55em; /* smaller ™ */
-    vertical-align: super;
+.ticker__group span {
+  display: inline-block;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-size: clamp(18px, 2vw, 28px);
+  white-space: nowrap;
 }
 
-/* Animation for smooth left scroll */
-@keyframes scroll-left {
-    from { transform: translateX(100%); }
-    to   { transform: translateX(-100%); }
+.ticker__group sup {
+  font-size: 0.55em;           /* smaller ™ */
+  vertical-align: super;       /* raise it */
+  opacity: 0.95;
 }
 
-
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ticker__move { animation: none; }
+}
