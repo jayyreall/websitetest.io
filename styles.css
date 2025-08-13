@@ -88,3 +88,4 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .ticker__move { animation: none; }
 }
+
