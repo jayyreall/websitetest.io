@@ -14,7 +14,6 @@ body {
     flex-direction: column;
 }
 
-/* Removed old header text-align center since marquee replaces header styling */
 footer {
     text-align: center;
     padding: 20px;
@@ -31,68 +30,37 @@ main {
     text-align: center;
 }
 
-/* ---- MARQUEE HEADER ---- */
+/* ---- SINGLE MARQUEE HEADER ---- */
 .header-marquee {
-    display: grid;
-    gap: 4px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.marquee {
+    background-color: #000; /* keeps top bar solid */
     overflow: hidden;
     white-space: nowrap;
     width: 100%;
-    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.marquee__track {
-    display: inline-flex;
-    gap: 48px;              /* space between repeats */
-    will-change: transform;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: none;
-    font-size: clamp(18px, 2vw, 28px);
-    padding: 4px 0;
-}
-
-.marquee__track span {
+.marquee-track {
     display: inline-block;
+    padding: 10px 0;
+    font-weight: 800;
+    font-size: clamp(18px, 2vw, 28px);
+    letter-spacing: 0.5px;
+    animation: scroll-left 12s linear infinite;
 }
 
-.marquee__track sup {
-    font-size: 0.55em;      /* smaller ™ */
-    vertical-align: super;  /* raise it */
-    opacity: 0.9;
+.marquee-track span {
+    margin-right: 50px; /* space between repeats */
 }
 
-/* Animations: left & right for the two tracks */
-@keyframes marquee-left {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+.marquee-track sup {
+    font-size: 0.55em; /* smaller ™ */
+    vertical-align: super;
 }
 
-@keyframes marquee-right {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
+/* Animation for smooth left scroll */
+@keyframes scroll-left {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(-100%); }
 }
 
-/* Run the animations */
-.marquee__track--a {
-    animation: marquee-left 12s linear infinite;
-}
-
-.marquee__track--b {
-    animation: marquee-right 12s linear infinite;
-}
-
-/* Accessibility: reduce motion */
-@media (prefers-reduced-motion: reduce) {
-    .marquee__track--a,
-    .marquee__track--b {
-        animation: none;
-    }
-}
 
