@@ -35,29 +35,30 @@ footer {
    Seamless single-row marquee
    ================================ */
 :root {
-  --ticker-gap: 64px;          /* spacing between items */
-  --ticker-speed: 18s;         /* lower = faster */
+  --ticker-gap: 64px;     /* spacing between words */
+  --ticker-speed: 18s;    /* lower = faster */
 }
 
 .ticker {
   overflow: hidden;
   width: 100%;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
-  /* soft edge fade so it looks premium */
+  background: transparent;        /* no bar behind text */
+  border-bottom: none;            /* remove the thin line */
+  line-height: 1;                 /* tighten line box */
+  /* soft edge fade so it looks premium (still invisible over black) */
   mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  background: #000; /* keeps top bar solid black */
 }
 
 .ticker__move {
   display: flex;
-  width: max-content;          /* shrink-wrap to content */
+  width: max-content;             /* shrink-wrap to content */
   animation: marquee var(--ticker-speed) linear infinite;
   will-change: transform;
 }
 
 /* Two identical groups placed back-to-back create a perfect loop.
-   The animation slides left by exactly 50% (one group's width). */
+   We translate exactly one group width (-50%). */
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -65,9 +66,10 @@ footer {
 
 .ticker__group {
   display: inline-flex;
-  flex: 0 0 auto;              /* don't shrink */
-  gap: var(--ticker-gap);
+  flex: 0 0 auto;                 /* don't shrink */
+  gap: var(--ticker-gap);         /* even spacing between items */
   padding: 10px 0;
+  padding-right: var(--ticker-gap); /* add trailing gap so the seam matches spacing */
 }
 
 .ticker__group span {
@@ -79,8 +81,8 @@ footer {
 }
 
 .ticker__group sup {
-  font-size: 0.55em;           /* smaller ™ */
-  vertical-align: super;       /* raise it */
+  font-size: 0.55em;              /* smaller ™ */
+  vertical-align: super;          /* raise it */
   opacity: 0.95;
 }
 
@@ -88,4 +90,3 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .ticker__move { animation: none; }
 }
-
